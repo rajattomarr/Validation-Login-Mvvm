@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Fragment User info-->
+    <dimen name="scroll_view_margin_bottom">2dp</dimen>
+    <dimen name="exp_container_margin_top">8dp</dimen>
+    <dimen name="tv_yourInfo_margin_top">4dp</dimen>
+    <dimen name="tv_yourInfo_text_size">32sp</dimen>
+    <dimen name="tv_educationalInfo_margin_top">4dp</dimen>
+    <dimen name="tv_educationalInfo_margin_start">16dp</dimen>
+    <dimen name="tv_educationalInfo_text_size">24sp</dimen>
+    <dimen name="education_container_margin_horizontal">16dp</dimen>
+    <dimen name="education_container_margin_top">8dp</dimen>
+    <dimen name="yearofpassing_container_margin_horizontal">16dp</dimen>
+    <dimen name="yearofpassing_container_margin_top">8dp</dimen>
+    <dimen name="grade_container_margin_horizontal">16dp</dimen>
+    <dimen name="grade_container_margin_top">8dp</dimen>
+    <integer name="grade_lines">1</integer>
+    <dimen name="tv_professional_Info_margin_top">4dp</dimen>
+    <dimen name="tv_professional_Info_margin_start">16dp</dimen>
+    <dimen name="tv_professional_Info_text_size">24sp</dimen>
+    <dimen name="exp_container_margin_horizontal">16dp</dimen>
+    <integer name="exp_lines">1</integer>
+    <dimen name="designation_container_margin_horizontal">16dp</dimen>
+    <dimen name="designation_container_margin_top">8dp</dimen>
+    <dimen name="domain_container_margin_horizontal">16dp</dimen>
+    <dimen name="domain_container_margin_top">8dp</dimen>
+    <dimen name="previous_btn_margin_top">60dp</dimen>
+    <dimen name="previous_btn_text_size">24sp</dimen>
+    <dimen name="previous_btn_margin_start">16dp</dimen>
+    <dimen name="next_btn_margin_top">60dp</dimen>
+    <dimen name="next_btn_text_size">24sp</dimen>
+    <dimen name="next_btn_margin_start">8dp</dimen>
+
+    <!--Fragment Address-->
+    <dimen name="tv_youraddress_margin_top">4dp</dimen>
+    <dimen name="tv_youraddress_text_size">32sp</dimen>
+    <dimen name="margin_top">8dp</dimen>
+    <dimen name="margin_horizontal">16dp</dimen>
+    <dimen name="padding_start">45dp</dimen>
+    <dimen name="submit_btn_margin_top">60dp</dimen>
+    <dimen name="submit_btn_text_size">24sp</dimen>
+    <integer name="lines">1</integer>
+
+
+    <dimen name="register_margin_horizontal">20dp</dimen>
+    <integer name="max_length">16</integer>
+    <dimen name="tv_Register_text_size">32sp</dimen>
+    <dimen name="et_gender_text_size">24sp</dimen>
+    <dimen name="radio_btn_text_size">18sp</dimen>
+    <dimen name="register_next_btn_text_size">22sp</dimen>
+    <dimen name="et_gender_margin_start">19dp</dimen>
+    <dimen name="et_gender_margin_top">16dp</dimen>
+    <dimen name="rb_female_margin_start">8dp</dimen>
+    <dimen name="tv_Register_margin_top">4dp</dimen>
+    <dimen name="iv_profile_margin_top">10dp</dimen>
+    <dimen name="iv_profile_padding">4dp</dimen>
+    <dimen name="iv_profile_stroke_width">5dp</dimen>
+</resources>

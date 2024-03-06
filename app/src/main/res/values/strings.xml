@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Neosoft Assesment</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--Fragment User info-->
+    <string name="your_info_text">Your Info</string>
+    <string name="education_container_text">Education</string>
+    <string name="yearofpassing_container_text">Year of Passing</string>
+    <string name="grade_text">Grade</string>
+    <string name="tv_professional_Info_text">Professional Info</string>
+    <string name="Experience_text">Experience</string>
+    <string name="designation_container_text">Designation</string>
+    <string name="domain_container_text">Domain</string>
+    <string name="previous_btn_text">Previous</string>
+    <string name="next_btn_text">Next</string>
+
+    <string name="address_text">Address</string>
+    <string name="landmark_text">LandMark</string>
+    <string name="City_text">City</string>
+    <string name="state_container_text">State</string>
+    <string name="postcode_text">Post Code</string>
+    <string name="tv_youraddress_text">Your Address</string>
+    <string name="submit_btn_text">Submit</string>
+    <string name="rb_female_text">Female</string>
+    <string name="rb_male_text">Male</string>
+    <string name="et_gender_text">Gender</string>
+    <string name="tv_Register_text">Register</string>
+    <string name="et_confirm_password_text">Confirm Password</string>
+    <string name="et_password_text">Password</string>
+    <string name="et_email_text">Email</string>
+    <string name="et_phone_text">Phone Number</string>
+    <string name="et_lastname_text">Last Name</string>
+    <string name="et_firstname_text">First Name</string>
+</resources>
