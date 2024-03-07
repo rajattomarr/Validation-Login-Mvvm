@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.neosoftassesment.R
 import com.example.neosoftassesment.databinding.FragmentAddressBinding
@@ -20,6 +21,7 @@ class AddressFragment : Fragment() {
     private var _binding : FragmentAddressBinding? = null
     private val binding get() = _binding!!
     lateinit var addressViewModel: AddressViewModel
+    private var isUserInputValid = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         addressViewModel = ViewModelProvider(this).get(AddressViewModel::class.java)
@@ -57,7 +59,7 @@ class AddressFragment : Fragment() {
             binding.addressContainer.helperText = null
         } else{
             binding.addressContainer.helperText = validAddress
-            return
+            isUserInputValid = false
         }
 
         val validLandMark = addressViewModel.validLandmark(binding.landmark.text.toString())
@@ -65,7 +67,7 @@ class AddressFragment : Fragment() {
             binding.landmarkContainer.helperText = null
         } else{
             binding.landmarkContainer.helperText = validLandMark
-            return
+            isUserInputValid = false
         }
 
         val validPostCode = addressViewModel.validPostCode(binding.postcode.text.toString())
@@ -73,12 +75,12 @@ class AddressFragment : Fragment() {
             binding.postcodeContainer.helperText = null
         }else{
             binding.postcodeContainer.helperText = validPostCode
-            return
+            isUserInputValid = false
+        }
+        if (isUserInputValid){
+            Toast.makeText(context,"Sucess",Toast.LENGTH_SHORT).show();
         }
     }
-
-
-
 
     override fun onDestroy() {
         super.onDestroy()

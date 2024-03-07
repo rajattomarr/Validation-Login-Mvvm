@@ -19,6 +19,7 @@ class RegisterFragment : Fragment() {
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
     lateinit var registerViewModel: RegisterViewModel
+    private var isUserInputValid = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         registerViewModel = ViewModelProvider(this).get(RegisterViewModel::class.java)
@@ -58,7 +59,7 @@ class RegisterFragment : Fragment() {
             binding.etFirstnameContainer.helperText = null
         } else {
             binding.etFirstnameContainer.helperText = firstNameValidation
-            return
+            isUserInputValid = false
         }
 
         val lastNameValidation = registerViewModel.validLastName(binding.etLastname.text.toString())
@@ -67,7 +68,7 @@ class RegisterFragment : Fragment() {
 
         } else {
             binding.etLastnameContainer.helperText = lastNameValidation
-            return
+            isUserInputValid = false
         }
 
         val validPhoneNumber = registerViewModel.validPhone(binding.etPhone.text.toString())
@@ -75,7 +76,7 @@ class RegisterFragment : Fragment() {
             binding.etPhoneContainer.helperText = null
         }else{
             binding.etPhoneContainer.helperText = validPhoneNumber
-            return
+            isUserInputValid = false
         }
 
         val emailValidation = registerViewModel.validEmail(binding.etEmail.text.toString())
@@ -83,7 +84,6 @@ class RegisterFragment : Fragment() {
             binding.etEmailContainer.helperText = null
         }else{
             binding.etEmailContainer.helperText = emailValidation
-            return
         }
 
 
@@ -92,7 +92,7 @@ class RegisterFragment : Fragment() {
             binding.etPasswordContainer.helperText = null
         }else{
             binding.etPasswordContainer.helperText = validPassword
-            return
+            isUserInputValid = false
         }
 
         val validConfirmPassword = registerViewModel.validcnfmPassword(binding.etConfirmPassword.text.toString(), binding.etPassword.text.toString())
@@ -100,9 +100,11 @@ class RegisterFragment : Fragment() {
             binding.etConfirmPasswordContainer.helperText = null
         }else{
             binding.etConfirmPasswordContainer.helperText = validConfirmPassword
-            return
+            isUserInputValid = false
         }
-        findNavController().navigate(R.id.action_registerFragment_to_userInfoFragment)
+        if (isUserInputValid){
+            findNavController().navigate(R.id.action_registerFragment_to_userInfoFragment)
+        }
     }
 
         override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
