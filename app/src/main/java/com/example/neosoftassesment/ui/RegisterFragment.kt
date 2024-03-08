@@ -6,10 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.neosoftassesment.R
 import com.example.neosoftassesment.databinding.FragmentRegisterBinding
+import com.example.neosoftassesment.utils.Status
+import com.example.neosoftassesment.utils.observeResource
+import com.example.neosoftassesment.utils.setErrorStatus
+import com.example.neosoftassesment.utils.setTextOnChange
 import com.example.neosoftassesment.viewModel.RegisterViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
 
@@ -19,7 +24,6 @@ class RegisterFragment : Fragment() {
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
     lateinit var registerViewModel: RegisterViewModel
-    private var isUserInputValid = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         registerViewModel = ViewModelProvider(this).get(RegisterViewModel::class.java)
@@ -35,77 +39,127 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews()
+        setupView(savedInstanceState)
+        setupObservers()
     }
 
-    private fun initViews() {
-        binding.nextBtn.setOnClickListener {
-            validateInput()
-        }
+     private fun setupView(savedInstanceState: Bundle?) {
 
-        binding.cameraBtn.setOnClickListener {
+        with(binding) {
+            // Register text change listener on Email field for validations
+            binding.etEmail.doOnTextChanged { text, _, _, _ ->
+                // When email text changes, delegate to the LoginViewModel
+                registerViewModel.onEmailChange(text.toString())
+            }
+
+            binding.etFirstname.doOnTextChanged{text, _, _, _ ->
+                registerViewModel.onFirstNameChange(text.toString())
+
+            }
+
+            binding.etLastname.doOnTextChanged(){ text, _, _, _ ->
+                registerViewModel.onLastNameChange(text.toString())
+            }
+
+            binding.etPassword.doOnTextChanged(){text, _, _, _ ->
+                registerViewModel.onPasswordChange(text.toString())
+            }
+
+            binding.etPhone.doOnTextChanged{text, _, _, _ ->
+                registerViewModel.onPhoneChange(text.toString())
+
+            }
+            binding.etConfirmPassword.doOnTextChanged{text, _, _, _ ->
+                registerViewModel.onConfirmPasswordChange(text.toString())
+            }
+        }
+    }
+     private fun setupObservers() {
+         binding.nextBtn.setOnClickListener {
+         registerViewModel.onLogin()
+
+        }
+         registerViewModel.loginProgress.observe(viewLifecycleOwner){
+             if(it){
+                 registerViewModel.resetLoginProcess()
+                 findNavController().navigate(R.id.action_registerFragment_to_userInfoFragment)
+             }
+
+         }
+
+         //email
+         registerViewModel.emailField.observe(viewLifecycleOwner) { emailValue ->
+             binding.etEmail.setTextOnChange(emailValue)
+         }
+
+         registerViewModel.emailValidation.observeResource(this) { status: Status, messageResId: Int? ->
+             binding.etEmailContainer.setErrorStatus(
+                 status,
+                 messageResId?.run { getString(this) }
+             )
+         }
+         // first Name
+         registerViewModel.firstNameField.observe(viewLifecycleOwner){firstNameValue ->
+             binding.etFirstname.setTextOnChange(firstNameValue)
+         }
+         registerViewModel.firstNameValidation.observeResource(this) { status: Status, messageResId: Int? ->
+             binding.etFirstnameContainer.setErrorStatus(
+                 status,
+                 messageResId?.run { getString(this) }
+             )
+         }
+
+         //last name
+         registerViewModel.lastNameField.observe(viewLifecycleOwner){firstNameValue ->
+             binding.etLastname.setTextOnChange(firstNameValue)
+         }
+         registerViewModel.lastNameValidation.observeResource(this) { status: Status, messageResId: Int? ->
+             binding.etLastnameContainer.setErrorStatus(
+                 status,
+                 messageResId?.run { getString(this) }
+             )
+         }
+
+         //password
+         registerViewModel.passwordField.observe(viewLifecycleOwner){passwordValue ->
+             binding.etPassword.setTextOnChange(passwordValue)
+         }
+         registerViewModel.passwordValidation.observeResource(this) { status: Status, messageResId: Int? ->
+             binding.etPasswordContainer.setErrorStatus(
+                 status,
+                 messageResId?.run { getString(this) }
+             )
+         }
+
+         //confirm password
+         registerViewModel.confirmPasswordField.observe(viewLifecycleOwner){confirmPasswordValue ->
+             binding.etConfirmPassword.setTextOnChange(confirmPasswordValue)
+         }
+         registerViewModel.confirmPasswordValidation.observeResource(this) { status: Status, messageResId: Int? ->
+             binding.etConfirmPasswordContainer.setErrorStatus(
+                 status,
+                 messageResId?.run { getString(this) }
+             )
+         }
+
+         //confirm password
+         registerViewModel.phoneField.observe(viewLifecycleOwner){phoneValue ->
+             binding.etPhone.setTextOnChange(phoneValue)
+         }
+         registerViewModel.phoneValidation.observeResource(this) { status: Status, messageResId: Int? ->
+             binding.etPhoneContainer.setErrorStatus(
+                 status,
+                 messageResId?.run { getString(this) }
+             )
+         }
+         binding.cameraBtn.setOnClickListener {
             ImagePicker.with(this)
                 .crop()
                 .compress(1024)
                 .maxResultSize(1080, 1080)
                 .start()
         }
-    }
-
-    private fun validateInput() {
-
-        val firstNameValidation = registerViewModel.validFirstName(binding.etFirstname.text.toString())
-        if(firstNameValidation == null){
-            binding.etFirstnameContainer.helperText = null
-        } else {
-            binding.etFirstnameContainer.helperText = firstNameValidation
-            isUserInputValid = false
-        }
-
-        val lastNameValidation = registerViewModel.validLastName(binding.etLastname.text.toString())
-        if (lastNameValidation == null) {
-            binding.etLastnameContainer.helperText = null
-
-        } else {
-            binding.etLastnameContainer.helperText = lastNameValidation
-            isUserInputValid = false
-        }
-
-        val validPhoneNumber = registerViewModel.validPhone(binding.etPhone.text.toString())
-        if(validPhoneNumber == null){
-            binding.etPhoneContainer.helperText = null
-        }else{
-            binding.etPhoneContainer.helperText = validPhoneNumber
-            isUserInputValid = false
-        }
-
-        val emailValidation = registerViewModel.validEmail(binding.etEmail.text.toString())
-        if(emailValidation == null){
-            binding.etEmailContainer.helperText = null
-        }else{
-            binding.etEmailContainer.helperText = emailValidation
-        }
-
-
-        val validPassword = registerViewModel.validPassword(binding.etPassword.text.toString())
-        if (validPassword == null){
-            binding.etPasswordContainer.helperText = null
-        }else{
-            binding.etPasswordContainer.helperText = validPassword
-            isUserInputValid = false
-        }
-
-        val validConfirmPassword = registerViewModel.validcnfmPassword(binding.etConfirmPassword.text.toString(), binding.etPassword.text.toString())
-        if (validConfirmPassword == null){
-            binding.etConfirmPasswordContainer.helperText = null
-        }else{
-            binding.etConfirmPasswordContainer.helperText = validConfirmPassword
-            isUserInputValid = false
-        }
-        if (isUserInputValid){
-            findNavController().navigate(R.id.action_registerFragment_to_userInfoFragment)
-        }
-    }
+     }
 
         override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
             super.onActivityResult(requestCode, resultCode, data)

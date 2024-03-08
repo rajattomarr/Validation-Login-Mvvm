@@ -1,62 +1,116 @@
 package com.example.neosoftassesment.viewModel
 
 import android.util.Patterns
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.neosoftassesment.utils.Resource
+import com.example.neosoftassesment.utils.Status
+import com.example.neosoftassesment.utils.Validation
+import com.example.neosoftassesment.utils.Validator
+import com.example.neosoftassesment.utils.filterValidation
+
 
 class RegisterViewModel : ViewModel() {
 
-     fun validLastName(lastNameText:String) : String? {
-        if(lastNameText.length < 3){
-            return "Minimum 3 characters Name"
-        }
-        return null
+    val emailField: MutableLiveData<String> = MutableLiveData()
+
+    val firstNameField : MutableLiveData<String> = MutableLiveData()
+
+    val lastNameField : MutableLiveData<String> = MutableLiveData()
+
+    val passwordField : MutableLiveData<String> = MutableLiveData()
+
+    val phoneField : MutableLiveData<String> = MutableLiveData()
+
+    val confirmPasswordField : MutableLiveData<String> = MutableLiveData()
+
+
+    private val validationsList: MutableLiveData<List<Validation>> = MutableLiveData()
+
+    val loginProgress: MutableLiveData<Boolean> = MutableLiveData()
+    fun onEmailChange(email: String) = emailField.postValue(email)
+    val emailValidation: LiveData<Resource<Int>> =
+        validationsList.filterValidation(Validation.Field.EMAIL)
+
+    fun onFirstNameChange(firstName : String) = firstNameField.postValue(firstName)
+    val firstNameValidation: LiveData<Resource<Int>> =
+        validationsList.filterValidation(Validation.Field.FIRSTNAME)
+
+    fun onLastNameChange(lastName : String) = lastNameField.postValue(lastName)
+    val lastNameValidation: LiveData<Resource<Int>> =
+        validationsList.filterValidation(Validation.Field.LASTNAME)
+
+    fun onPasswordChange(password : String) = passwordField.postValue(password)
+    val passwordValidation: LiveData<Resource<Int>> =
+        validationsList.filterValidation(Validation.Field.PASSWORD)
+
+    fun onPhoneChange(phone : String) = phoneField.postValue(phone)
+    val phoneValidation: LiveData<Resource<Int>> =
+        validationsList.filterValidation(Validation.Field.PHONE)
+
+    fun onConfirmPasswordChange(confirmPassword : String) = confirmPasswordField.postValue(confirmPassword)
+    val confirmPasswordValidation: LiveData<Resource<Int>> =
+        validationsList.filterValidation(Validation.Field.CONFIRMPASSWORD)
+
+    fun resetLoginProcess(){
+        loginProgress.postValue(false)
     }
+    fun onLogin() {
+        // Get the values of the fields
+        val emailValue: String? = emailField.value
+        val firstNameValue : String? = firstNameField.value
+        val lastNameValue: String? = lastNameField.value
+        val passwordValue: String? = passwordField.value
+        val confirmPasswordValue: String? = confirmPasswordField.value
+        val phoneValue: String? = phoneField.value
 
-     fun validFirstName(firstNameText:String) : String? {
-        if(firstNameText.length < 3){
-            return "Minimum 3 characters Name"
-        }
-        return null
-    }
 
-    fun validEmail(emailText:String) : String? {
-        if(!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()){
-            return "Invalid Email Address"
-        }
-        return null
-    }
+        val validations = Validator.validateLoginFields(emailValue,firstNameValue,lastNameValue,passwordValue,phoneValue,confirmPasswordValue)
+        validationsList.postValue(validations)
 
-     fun validPhone(phoneText :String) : String? {
-        if(!phoneText.matches(".*[0-9].*".toRegex())){
-            return "Must be Digit"
-        }
-        if (phoneText.length != 10){
-            return "Must be 10 digits"
+
+        if (emailValue != null
+            && validations.isNotEmpty()
+            && validations.count { validation -> validation.resource.status == Status.SUCCESS } == validations.size
+        ) {
+            loginProgress.postValue(true)
         }
 
-        return null
-    }
+        if (firstNameValue != null
+            && validations.isNotEmpty()
+            && validations.count { validation -> validation.resource.status == Status.SUCCESS } == validations.size
+        ) {
+            loginProgress.postValue(true)
+        }
 
-        fun validPassword(passwordText :String) : String? {
-        if(passwordText.length < 8){
-            return "Minimum 8 characters Password"
+        if (lastNameValue != null
+            && validations.isNotEmpty()
+            && validations.count { validation -> validation.resource.status == Status.SUCCESS } == validations.size
+        ) {
+            loginProgress.postValue(true)
         }
-        if(!passwordText.matches(".*[A-Z].*".toRegex())){
-            return "Must Contain one Upper-Case Character"
-        }
-        if(!passwordText.matches(".*[a-z].*".toRegex())){
-            return "Must Contain one Lower-Case Character"
-        }
-        if(!passwordText.matches(".*[@#\$%^&+=].*".toRegex())){
-            return "Must Contain one Special Character (@#\$%^&+=)"
-        }
-        return null
-    }
 
-     fun validcnfmPassword(cnfmPasswordText :String ,passwordText: String  ) : String? {
-        if(cnfmPasswordText != passwordText){
-            return "Password doesn't match"
+        if (passwordValue != null
+            && validations.isNotEmpty()
+            && validations.count { validation -> validation.resource.status == Status.SUCCESS } == validations.size
+        ) {
+            loginProgress.postValue(true)
         }
-        return null
+
+        if (confirmPasswordValue != null
+            && validations.isNotEmpty()
+            && validations.count { validation -> validation.resource.status == Status.SUCCESS } == validations.size
+        ) {
+            loginProgress.postValue(true)
+        }
+
+        if (phoneValue != null
+            && validations.isNotEmpty()
+            && validations.count { validation -> validation.resource.status == Status.SUCCESS } == validations.size
+        ) {
+            loginProgress.postValue(true)
+        }
+
     }
 }

@@ -32,4 +32,20 @@
     <string name="et_phone_text">Phone Number</string>
     <string name="et_lastname_text">Last Name</string>
     <string name="et_firstname_text">First Name</string>
+    <string name="error_login_sign_up_email_field_invalid">Enter Valid Email</string>
+    <string name="error_login_sign_up_email_field_empty">Email Can\'t be Empty</string>
+    <string name="error_sign_up_name_field_empty">First Name Can\'t be Empty</string>
+    <string name="length_of_first_name">First Name should be atleast 3 character</string>
+    <string name="length_of_last_name">Last Name should be atleast 3 character</string>
+    <string name="last_name_empty">Last Name Can\'t be Empty</string>
+    <string name="length_of_password">Password should be atleast 8 character</string>
+    <string name="password_uppercase">Password must Contain one Upper-Case Character</string>
+    <string name="password_lowercase">Must Contain one Lower-Case Character</string>
+    <string name="password_character"><![CDATA[Must Contain one Special Character (@#\\$%^&+=)]]></string>
+    <string name="must_be_10_digit">Must be 10 Digit</string>
+    <string name="phone_not_null">phone Number Can\'t be Empty</string>
+    <string name="cofirmPassword_empty">Confirm Password Can\'t be Empty</string>
+    <string name="confirmPassword_doesnt_match">Password didn\'t match</string>
+    <string name="password_empty">Password Can\'t be Empty</string>
+    <string name="mustbedigit">Must be 10 Digit</string>
 </resources>
