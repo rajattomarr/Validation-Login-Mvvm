@@ -21,6 +21,46 @@ object Validator {
 
         }
 
+    fun validateAddressFields(address: String?,landmark : String?,postcode : String?): List<Validation> =
+        mutableListOf<Validation>().apply {
+            validateAddress(address)
+            validateLandMark(landmark)
+            validatePostCode(postcode)
+
+        }
+
+    private fun MutableList<Validation>.validateAddress(address: String?) {
+        when {
+            address.isNullOrBlank() ->
+                add(Validation(Validation.Field.ADDRESS, Resource.Error(R.string.address_not_null)))
+            address?.length!! < 3 ->
+                add(Validation(Validation.Field.ADDRESS, Resource.Error(R.string.length_of_address)))
+            else ->
+                add(Validation(Validation.Field.ADDRESS, Resource.Success()))
+        }
+    }
+
+    private fun MutableList<Validation>.validateLandMark(landmark: String?) {
+        when {
+            landmark.isNullOrBlank() ->
+                add(Validation(Validation.Field.LANDMARK, Resource.Error(R.string.landmark_not_null)))
+            landmark?.length!! < 3 ->
+                add(Validation(Validation.Field.LANDMARK, Resource.Error(R.string.length_of_landmark)))
+            else ->
+                add(Validation(Validation.Field.LANDMARK, Resource.Success()))
+        }
+    }
+
+    private fun MutableList<Validation>.validatePostCode(postcode: String?) {
+        when {
+            postcode.isNullOrBlank() ->
+                add(Validation(Validation.Field.POSTCODE, Resource.Error(R.string.postcode_empty)))
+            postcode?.length!! < 6 ->
+                add(Validation(Validation.Field.POSTCODE, Resource.Error(R.string.minimum_six_number_required)))
+            else ->
+                add(Validation(Validation.Field.POSTCODE, Resource.Success()))
+        }
+    }
 
 
     private fun MutableList<Validation>.validateFirstName(firstName: String?) {
@@ -128,7 +168,10 @@ data class Validation(val field: Field, val resource: Resource<Int>) {
         LASTNAME,
         PASSWORD,
         PHONE,
-        CONFIRMPASSWORD
+        CONFIRMPASSWORD,
+        ADDRESS,
+        LANDMARK,
+        POSTCODE
     }
 
 }

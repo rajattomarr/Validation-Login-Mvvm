@@ -8,10 +8,16 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.neosoftassesment.R
 import com.example.neosoftassesment.databinding.FragmentAddressBinding
 import com.example.neosoftassesment.databinding.FragmentRegisterBinding
+import com.example.neosoftassesment.utils.Status
+import com.example.neosoftassesment.utils.observeResource
+import com.example.neosoftassesment.utils.setErrorStatus
+import com.example.neosoftassesment.utils.setTextOnChange
 import com.example.neosoftassesment.viewModel.AddressViewModel
 import com.example.neosoftassesment.viewModel.RegisterViewModel
 
@@ -37,10 +43,12 @@ class AddressFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews()
+        setupView(savedInstanceState)
+        setupObservers()
+
     }
 
-    private fun initViews() {
+    private fun setupObservers() {
         val stateAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_listitem,addressViewModel.state)
         binding.state.setAdapter(stateAdapter)
         binding.state.onItemClickListener =
@@ -49,36 +57,62 @@ class AddressFragment : Fragment() {
 
             }
         binding.submitBtn.setOnClickListener {
-            validateInput()
+            addressViewModel.onLogin()
+
+        }
+
+        addressViewModel.addressField.observe(viewLifecycleOwner) { addressValue ->
+            binding.address.setTextOnChange(addressValue)
+        }
+
+        addressViewModel.addressValidation.observeResource(this) { status: Status, messageResId: Int? ->
+            binding.addressContainer.setErrorStatus(
+                status,
+                messageResId?.run { getString(this) }
+            )
+        }
+
+        addressViewModel.landMarkField.observe(viewLifecycleOwner) { landmarkValue ->
+            binding.landmark.setTextOnChange(landmarkValue)
+        }
+
+        addressViewModel.landmarkValidation.observeResource(this) { status: Status, messageResId: Int? ->
+            binding.landmarkContainer.setErrorStatus(
+                status,
+                messageResId?.run { getString(this) }
+            )
+        }
+
+        addressViewModel.postCodeField.observe(viewLifecycleOwner) { postcodeValue ->
+            binding.postcode.setTextOnChange(postcodeValue)
+        }
+
+        addressViewModel.postcodeValidation.observeResource(this) { status: Status, messageResId: Int? ->
+            binding.postcodeContainer.setErrorStatus(
+                status,
+                messageResId?.run { getString(this) }
+            )
         }
     }
 
-    private fun validateInput() {
-        val validAddress = addressViewModel.validAddressName(binding.address.text.toString())
-        if(validAddress== null){
-            binding.addressContainer.helperText = null
-        } else{
-            binding.addressContainer.helperText = validAddress
-            isUserInputValid = false
-        }
+    private fun setupView(savedInstanceState: Bundle?) {
 
-        val validLandMark = addressViewModel.validLandmark(binding.landmark.text.toString())
-        if(validLandMark == null){
-            binding.landmarkContainer.helperText = null
-        } else{
-            binding.landmarkContainer.helperText = validLandMark
-            isUserInputValid = false
-        }
+        with(binding) {
+            // Register text change listener on Email field for validations
+            binding.address.doOnTextChanged { text, _, _, _ ->
+                // When email text changes, delegate to the LoginViewModel
+                addressViewModel.onAddressChange(text.toString())
+            }
 
-        val validPostCode = addressViewModel.validPostCode(binding.postcode.text.toString())
-        if (validPostCode == null){
-            binding.postcodeContainer.helperText = null
-        }else{
-            binding.postcodeContainer.helperText = validPostCode
-            isUserInputValid = false
-        }
-        if (isUserInputValid){
-            Toast.makeText(context,"Sucess",Toast.LENGTH_SHORT).show();
+            binding.landmark.doOnTextChanged{text, _, _, _ ->
+                addressViewModel.onLandmarkChange(text.toString())
+
+            }
+
+            binding.postcode.doOnTextChanged{text, _, _, _ ->
+                addressViewModel.onPostcodeChange(text.toString())
+
+            }
         }
     }
 

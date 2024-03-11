@@ -48,4 +48,10 @@
     <string name="confirmPassword_doesnt_match">Password didn\'t match</string>
     <string name="password_empty">Password Can\'t be Empty</string>
     <string name="mustbedigit">Must be 10 Digit</string>
+    <string name="minimum_six_number_required">Minimum 6 Number Required</string>
+    <string name="postcode_empty">Post Code can\'t be empty</string>
+    <string name="length_of_landmark">LandMark should be atleast 3 character</string>
+    <string name="length_of_address">Address should be atleast 3 character</string>
+    <string name="address_not_null">Address can\'t be Empty</string>
+    <string name="landmark_not_null">LandMark can\'t be Empty</string>
 </resources>
